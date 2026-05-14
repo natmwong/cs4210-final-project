@@ -74,6 +74,7 @@ def print_metrics(metrics: dict):
         )
 
 def global_keywords(model, vectorizer, n: int = 10):
+    """Extract top global keywords for positive and negative sentiments."""
     names = np.array(vectorizer.get_feature_names_out())
     coef  = model.coef_[0]
     pos   = list(zip(names[np.argsort(coef)[-n:][::-1]],
@@ -83,10 +84,11 @@ def global_keywords(model, vectorizer, n: int = 10):
     return pos, neg
 
 def print_global_keywords(model, vectorizer):
+    """Print the top global keywords for positive and negative sentiments."""
     pos_kw, neg_kw = global_keywords(model, vectorizer, n=10)
     console.print()
     console.print(Rule(
-        "[bold]Top Global Keywords (Logistic Regression Coefficients)[/]",
+        "[bold]Top Global Keywords (Logistic Regression Coefficients)[/]", 
         style="cyan"
     ))
 
@@ -110,6 +112,7 @@ def print_global_keywords(model, vectorizer):
     console.print(Columns([pos_tbl, neg_tbl]))
 
 def print_nb_comparison(metrics: dict, nb_metrics: dict):
+    """Print a comparison of Logistic Regression and Naive Bayes metrics."""
     console.print()
     console.print(Rule(
         "[bold]Logistic Regression vs. Naive Bayes Baseline[/]",
@@ -146,6 +149,7 @@ def print_nb_comparison(metrics: dict, nb_metrics: dict):
 
 def print_prediction(review_text: str, sentiment: str,
                      confidence: float, keywords):
+    """Print the sentiment prediction for a single review."""
     console.print()
     display = (review_text if len(review_text) <= 120
                else review_text[:117] + "...")
@@ -156,7 +160,7 @@ def print_prediction(review_text: str, sentiment: str,
 
     color  = "green" if sentiment == "Positive" else "red"
     filled = int(confidence * 20)
-    bar    = (f"[{color}]" + "█" * filled + "[/]"
+    bar    = (f"[{color}]" + "█" * filled + "[/]" 
               + "[dim]" + "░" * (20 - filled) + "[/]")
 
     result = Text()
@@ -175,8 +179,9 @@ def print_prediction(review_text: str, sentiment: str,
 
     console.print(Panel(result, title="[bold cyan]Prediction[/]",
                         border_style="cyan"))
-    
+
 def print_batch_results(results: list):
+    """Print the results of batch sentiment analysis."""
     console.print()
     console.print(Rule("[bold]Batch Results[/]", style="cyan"))
     tbl = Table(box=box.ROUNDED, show_header=True, header_style="bold cyan")

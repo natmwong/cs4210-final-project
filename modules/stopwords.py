@@ -1,10 +1,11 @@
-# ─────────────────────────────────────────────────────────────────────────────
 # STOPWORDS  ('not' and 'no' removed — kept for negation marking)
-# ─────────────────────────────────────────────────────────────────────────────
+# This file defines stopwords and negation triggers for text preprocessing.
+
 import nltk
 
 
 STOPWORDS = {
+    # Common English stopwords, excluding negation triggers.
     'i','me','my','myself','we','our','ours','ourselves','you','your','yours',
     'yourself','yourselves','he','him','his','himself','she','her','hers',
     'herself','it','its','itself','they','them','their','theirs','themselves',
@@ -22,14 +23,13 @@ STOPWORDS = {
     'won','wouldn','game','games','play','played','playing','get','got','like',
 }
 
-# Kept out of STOPWORDS so they survive to the negation-marking step
+# Negation triggers are words that indicate negation in a sentence.
 NEGATION_TRIGGERS = frozenset({
     'not', 'no', 'never', 'neither', 'nobody', 'nothing', 'nowhere', 'cannot',
 })
 
-# ─────────────────────────────────────────────────────────────────────────────
 # NLTK SETUP
-# ─────────────────────────────────────────────────────────────────────────────
+# Ensure NLTK resources are downloaded for tokenization and stopword handling.
 try:
     nltk.data.find('tokenizers/punkt_tab')
 except LookupError:
@@ -46,5 +46,5 @@ except LookupError:
 from nltk.corpus import stopwords as _nltk_sw
 from nltk.tokenize import word_tokenize
 
-# Remove negation triggers from NLTK stopwords so they survive filtering
+# Remove negation triggers from NLTK stopwords so they survive filtering.
 NLTK_STOPWORDS = set(_nltk_sw.words('english')) - NEGATION_TRIGGERS
